@@ -2,6 +2,7 @@ package com.markets.car.demo.services;
 
 import com.markets.car.demo.apiModels.cars.CarApiModel;
 import com.markets.car.demo.apiModels.cars.CreateCarApiModel;
+import com.markets.car.demo.apiModels.cars.apiMapper.CarApiMapper;
 import com.markets.car.demo.dao.CarRepo;
 import com.markets.car.demo.dao.RepositoryInterface;
 import com.markets.car.demo.db_mapper.CarDbMapper;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class CarService {
     @Autowired
     private CarDbMapper mapper;
+    private CarApiMapper apiMapper;
     private CarRepo carRepo;
 
     public CarApiModel createCar(CreateCarApiModel apiModel) {
@@ -26,6 +28,6 @@ public class CarService {
 
         CarsRecord record = mapper.createRecord(apiModel);
         carRepo.add(record);
-        return null;
+        return apiMapper.create(record);
     }
 }

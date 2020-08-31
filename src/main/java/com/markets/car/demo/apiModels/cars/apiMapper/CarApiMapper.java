@@ -22,7 +22,10 @@ public class CarApiMapper implements ApiMapper<CarApiModel,CarsRecord> {
 
     @Override
     public CarApiModel create(CarsRecord record) {
-        return null;
+        CarApiModel carApi = new CarApiModel();
+        carApi.setBrand((String) record.get("brand"));
+        carApi.setModel((String) record.get("model"));
+        return carApi;
     }
 }
 

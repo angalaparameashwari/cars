@@ -16,10 +16,6 @@ public class CarRepo implements RepositoryInterface<CarsRecord> {
     @Override
     public CarsRecord add(CarsRecord record) {
         record.insert();
-        context.insertInto(Tables.CARS)
-                .set(record)
-                .returning()
-                .fetchOne();
         return null;
     }
 }
