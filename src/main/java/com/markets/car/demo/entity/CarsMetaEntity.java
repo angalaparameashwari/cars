@@ -1,9 +1,11 @@
 package com.markets.car.demo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import lombok.*;
 import org.jooq.JSON;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -29,5 +31,6 @@ public class CarsMetaEntity extends CommonEntityFields {
     private String externalId;
     private String brand;
     private String model;
-    private JSON features;
+    @Column( columnDefinition = "json" )
+    private String features;
 }

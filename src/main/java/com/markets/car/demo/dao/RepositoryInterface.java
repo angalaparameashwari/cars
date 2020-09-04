@@ -1,11 +1,23 @@
 package com.markets.car.demo.dao;
 
-import com.markets.car.demo.apiModels.cars.ApiModel;
-import com.markets.car.demo.entity.CommonEntityFields;
-import org.jooq.Record;
-import org.jooq.Record8;
+import org.jooq.DSLContext;
 import org.jooq.impl.UpdatableRecordImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public interface RepositoryInterface<T extends Record8> {
-        public T add(T entry);
+public abstract class RepositoryInterface<R extends UpdatableRecordImpl>  {
+        @Autowired
+        DSLContext context;
+
+        public R insert(R record) {
+                record.attach(context.configuration());
+                record.insert();
+                return null;
+        }
+
+//
+//        API ->  create -> Domain -> converter -> Domain Specific resource -> business -> DAO -> Entity
+//
+//                update ->
+//
+//                Resource ->
 }

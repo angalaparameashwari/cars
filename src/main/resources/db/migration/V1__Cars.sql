@@ -3,7 +3,7 @@ CREATE TABLE cars_meta (
    external_id VARCHAR (255) NOT NULL,
    brand VARCHAR (255) NOT NULL,
    model VARCHAR (255) ,
-   features json ,
+   features VARCHAR (400),
    deleted VARCHAR (255),
    created_at TIMESTAMP ,
    updated_at TIMESTAMP
@@ -70,7 +70,7 @@ CREATE TABLE services (
    model VARCHAR (255),
    name VARCHAR (255) ,
    price INTEGER,
-   package json,
+   package VARCHAR (400),
    deleted VARCHAR (255),
    created_at TIMESTAMP ,
    updated_at TIMESTAMP

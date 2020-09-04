@@ -1,12 +1,11 @@
 package com.markets.car.demo.services;
 
-import com.markets.car.demo.apiModels.cars.CarApiModel;
-import com.markets.car.demo.apiModels.cars.CreateCarApiModel;
-import com.markets.car.demo.apiModels.cars.apiMapper.CarApiMapper;
+import com.markets.car.demo.api_models.cars.CarApiModel;
+import com.markets.car.demo.api_models.cars.CreateCarApiModel;
+import com.markets.car.demo.api_mapper.CarMapper;
+import com.markets.car.demo.dao.CarMetaRepo;
 import com.markets.car.demo.dao.CarRepo;
-import com.markets.car.demo.dao.RepositoryInterface;
-import com.markets.car.demo.db_mapper.CarDbMapper;
-import com.markets.car.demo.db_mapper.DBMapper;
+import com.tej.JooQDemo.jooq.sample.model.tables.records.CarsMetaRecord;
 import com.tej.JooQDemo.jooq.sample.model.tables.records.CarsRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,18 +15,25 @@ import org.springframework.stereotype.Service;
 @Component
 public class CarService {
     @Autowired
-    private CarDbMapper mapper;
-    private CarApiMapper apiMapper;
+    private CarMapper mapper;
+    @Autowired
     private CarRepo carRepo;
+    @Autowired
+    private CarMetaRepo carMetaRepo;
+
 
     public CarApiModel createCar(CreateCarApiModel apiModel) {
-        //valida
-        //
-        //
-        //
+        CarsRecord record = mapper.createApiToCarRecord(apiModel);
+        CarsMetaRecord carsMeta = mapper.createApiToCarMetaRecord(apiModel);
+        carMetaRepo.insert(carsMeta);
+        record.setCarId(carsMeta.getId());
+        carRepo.insert(record);
+        return mapper.recordToApiModel(record,carsMeta);
+    }
 
-        CarsRecord record = mapper.createRecord(apiModel);
-        carRepo.add(record);
-        return apiMapper.create(record);
+    public CarApiModel getCar(String id){
+        CarsMetaRecord carsMeta = carMetaRepo.fetch(id);
+        CarsRecord car = carRepo.fetch(carsMeta.getId());
+        return mapper.recordToApiModel(car,carsMeta);
     }
 }
