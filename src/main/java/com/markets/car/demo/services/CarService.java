@@ -7,6 +7,8 @@ import com.markets.car.demo.dao.CarMetaRepo;
 import com.markets.car.demo.dao.CarRepo;
 import com.tej.JooQDemo.jooq.sample.model.tables.records.CarsMetaRecord;
 import com.tej.JooQDemo.jooq.sample.model.tables.records.CarsRecord;
+import ms_exceptions.GeneralException;
+import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -32,8 +34,12 @@ public class CarService {
     }
 
     public CarApiModel getCar(String id){
-        CarsMetaRecord carsMeta = carMetaRepo.fetch(id);
-        CarsRecord car = carRepo.fetch(carsMeta.getId());
+        Record record = carMetaRepo.fetchWithCar(id);
+        if(record ==  null){
+            throw new GeneralException("not found");
+        }
+        CarsMetaRecord carsMeta = record.into(CarsMetaRecord.class);
+        CarsRecord car = record.into(CarsRecord.class);
         return mapper.recordToApiModel(car,carsMeta);
     }
 }
