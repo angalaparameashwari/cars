@@ -2,28 +2,31 @@ package com.markets.car.demo.ms_exceptions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Override
-    protected void configure(HttpSecurity http) throws Exception
-    {
-        http
-                .csrf().disable()
-                .authorizeRequests().anyRequest().authenticated()
-                .and()
-                .httpBasic();
-    }
+    private static final String API_KEY_AUTH_HEADER_NAME = "Authorization";
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth)
-            throws Exception
-    {
-        auth.inMemoryAuthentication()
-                .withUser("CARS_API_KEY")
-                .password("ap");
+
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        ApiKeyAuthFilter filter = new ApiKeyAuthFilter(API_KEY_AUTH_HEADER_NAME);
+        filter.setAuthenticationManager(new ApiKeyAuthManager());
+
+        http.antMatcher("/*").
+                csrf().
+                disable().
+                sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).
+                and()
+                .addFilter(filter)
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated();
     }
 }
