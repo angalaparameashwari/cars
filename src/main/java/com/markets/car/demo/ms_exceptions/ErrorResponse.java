@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @AllArgsConstructor
 @Getter
 @Setter
+
 public class ErrorResponse {
     private int httpCode;
 
