@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.AccessDeniedException;
 
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
@@ -25,7 +26,10 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try{
             filterChain.doFilter(request,response);
-        } catch (Exception exp){
+        } catch (AccessDeniedException exp){
+            ResponseEntity<ErrorResponse> err = exceptionHandler.handleAccessDeniedException(exp);
+            this.sendError(err,response);
+        } catch(Exception exp){
             ResponseEntity<ErrorResponse> err = exceptionHandler.handleException(exp);
             this.sendError(err,response);
         } finally {

@@ -37,8 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().disable()
                 .csrf().disable()
 //                .authorizeRequests()
+//                .anyRequest().authenticated().and()
 //                .exceptionHandling().and()
-                .addFilterBefore(new AuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new AuthenticationFilter(), BasicAuthenticationFilter.class);
 //                .addFilterBefore(new ExceptionHandlerFilter(exceptionHandler),AuthenticationFilter.class);
 
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
