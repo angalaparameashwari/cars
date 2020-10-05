@@ -19,14 +19,10 @@ public class AuthenticationFilter extends OncePerRequestFilter{
 
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-            try {
                 if (!request.getHeader("Authorization").equals("Basic Q0FSU19BUElfS0VZOg==")) {
                     throw new AccessDeniedException("Invalid API key");
                 }
 
                 filterChain.doFilter(request, response);
-            }catch (Exception ex){
-                ex.printStackTrace();
-            }
         }
 }

@@ -39,8 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .authorizeRequests()
 //                .anyRequest().authenticated().and()
 //                .exceptionHandling().and()
-                .addFilterBefore(new AuthenticationFilter(), BasicAuthenticationFilter.class);
-//                .addFilterBefore(new ExceptionHandlerFilter(exceptionHandler),AuthenticationFilter.class);
+                .addFilterBefore(new AuthenticationFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new ExceptionHandlerFilter(exceptionHandler),AuthenticationFilter.class);
 
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                .and()

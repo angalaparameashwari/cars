@@ -14,5 +14,10 @@ public class CarRepo extends RepositoryInterface {
                 .where(Cars.CARS.CAR_ID.equal(id)).fetchOne();
     }
 
+    // Multitenancy -> domains,
+    /*
+    name, id, status
+     */
+
 
 }
